@@ -7,7 +7,7 @@ from omegaconf import OmegaConf
 from Bio.PDB import PDBParser
 
 import sys
-sys.path.append('../')
+sys.path.append('/home/petmedix/ThermoMPNN')
 from datasets import Mutation
 from train_thermompnn import TransferModelPL
 from protein_mpnn_utils import tied_featurize, alt_parse_PDB
@@ -116,6 +116,6 @@ if __name__ == "__main__":
     parser.add_argument('--model_path', type=str, default='', help='filepath to model to use for inference')
 
     args = parser.parse_args()
-    cfg = OmegaConf.load("../local.yaml")
+    cfg = OmegaConf.load("/home/petmedix/ThermoMPNN/local.yaml")
     with torch.no_grad():
         main(cfg, args)
