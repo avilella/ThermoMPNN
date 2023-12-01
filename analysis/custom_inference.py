@@ -66,6 +66,7 @@ def main(cfg, args):
     for name, model in models.items():
         model = model.eval()
         model = model.cuda()
+#       torch.cuda.set_device("cuda:%d"%gpu)
         for dataset_name, dataset in datasets.items():
             if len(args.chain) < 1:  # if unspecified, take first chain
                 chain = get_chains(input_pdb)[0]
@@ -114,8 +115,13 @@ if __name__ == "__main__":
     parser.add_argument('--pdb', type=str, default='', help='Input PDB to use for custom inference')
     parser.add_argument('--chain', type=str, default='A', help='Chain in input PDB to use.')
     parser.add_argument('--model_path', type=str, default='', help='filepath to model to use for inference')
+    parser.add_argument('--gpu', type=int, default=0, help='GPU ID to use')
 
     args = parser.parse_args()
+
+    if torch.cuda.is_available():
+        torch.cuda.set_device(args.gpu)
+
     cfg = OmegaConf.load("/home/petmedix/ThermoMPNN/local.yaml")
     with torch.no_grad():
         main(cfg, args)
